@@ -4,40 +4,42 @@ import java.util.Scanner;
 
 
 public class Matriz{
+    int l;
+    int c;
+    private double[][] Valores;
 
     public static Scanner sc = new Scanner (System.in);
 
-    public static double[][] leMatriz (int numLinhas, int numColunas){
-        double[][] M =  new double[numLinhas][numColunas];
-        for (int i = 0; i < numLinhas; i++)
-            for (int j = 0; j < numColunas; j++){
-                System.out.println("digite o valor a recebido:");
-                M[i][j] = sc.nextDouble();
-            }
-        return M;
-    }
-    public static double[][] MultMatriz (double[][]A, double[][]B){
-        int numLinhasA = A.length;
-        int numLinhasB = B.length;
-        int numColunasB = B[0].length;
-        double[][] resultado = new double[numLinhasA][numLinhasB];
-        for (int i = 0; i < numLinhasA; i++){
-            for (int j = 0; j < numColunasB; j++){
-                resultado[i][j] = 0;
-                for (int k = 0; k < numLinhasB; k++)
-                    resultado[i][j] = resultado[i][j] + (A[i][k] * B[k][j]);
-            }
-        }
-        return resultado;
+    public Matriz(int nlinhas, int ncolunas){
+        l = nlinhas; c= ncolunas;
+        Valores = new double[nlinhas][ncolunas];
     }
 
-    public static void imprimeMatriz (double[][] M){
-        int numLinhas = M.length;
-        int numColunas = M[0].length;
-        for (int i = 0; i < numLinhas; i++){
+    public void leMatriz (){
+        for (int i = 0; i < l; i++)
+            for (int j = 0; j < c; j++){
+                System.out.println("digite o valor a recebido:");
+                Valores[i][j] = sc.nextDouble();
+            }
+    }
+
+    public static Matriz MultMatriz (Matriz A, Matriz B){
+        Matriz C = new Matriz (A.l, B.c);
+        for (int i = 0; i < A.l; i++){
+            for (int j = 0; j < B.c; j++){
+                C.Valores[i][j] = 0;
+                for (int k = 0; k < A.l; k++)
+                    C.Valores[i][j] = C.Valores[i][j] + (A.Valores[i][k] * B.Valores[k][j]);
+            }
+        }
+        return C;
+    }
+
+    public void imprimeMatriz (){
+        for (int i = 0; i < l; i++){
             System.out.print("\n");
-            for (int j = 0; j < numColunas; j++)
-                System.out.print(M[i][j] + " ");
+            for (int j = 0; j < c; j++)
+                System.out.print(Valores[i][j] + " ");
         }
     }
 
@@ -52,15 +54,13 @@ public class Matriz{
         int bx = Integer.parseInt(args[2]);
         int by = Integer.parseInt(args[3]);
 
-        double[][]A;
-        double[][]B;
-        double[][]C;
+        Matriz A = new Matriz(ax, ay);
+        Matriz B = new Matriz(bx, by);
+        Matriz C = new Matriz(ax, by);
 
-
-        A = leMatriz(ax, ay);
-        B = leMatriz(bx, by);
+        A.leMatriz();
+        B.leMatriz();
         C = MultMatriz(A, B);
-        
-        imprimeMatriz(C);
+        C.imprimeMatriz();
     }
 }
